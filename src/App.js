@@ -51,12 +51,17 @@ const App = () => {
       style={{
         backgroundImage: `url('https://images.unsplash.com/photo-1514477917009-389c76a86b68?q=80&w=1967&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D ')`,
         minHeight: "100vh",
+        fontWeight: "bold",
       }}
     >
       <div // current
         class="ui two column centered grid"
+        style={{
+          padding: "20px",
+          justifyContent: "center",
+        }}
       >
-        <div class="column">
+        <div>
           <h2 style={{ margin: "0" }}>{locationDetails.name}</h2>
           <p style={{ margin: "5px 0" }}>
             {current.last_updated.split(" ")[1]}
@@ -72,7 +77,7 @@ const App = () => {
           />
           <p style={{ margin: "5px 0" }}>{current.condition.text}</p>
         </div>
-        <div class="column">
+        <div>
           <h1
             style={{ margin: "0", fontSize: "48px" }}
           >{`${current.temp_c}°C`}</h1>
@@ -80,6 +85,11 @@ const App = () => {
       </div>
       <div // 5 day
         class="ui grid"
+        style={{
+          justifyContent: "space-between",
+          padding: "10px",
+          gap: "25px",
+        }}
       >
         {forecast && forecast.length > 0
           ? forecast.slice(0, 5).map((day, index) => (
@@ -99,6 +109,7 @@ const App = () => {
           overflowX: "auto",
           padding: "10px",
           gap: "180px",
+          justifyContent: "space-between",
         }}
       >
         <div className="row">
