@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -46,54 +47,72 @@ const App = () => {
   const { current, location: locationDetails, forecast } = weatherData;
   const hourlyData = forecast && forecast.length > 0 ? forecast[0].hour : [];
 
-  return (
+  //current
+  const CurrentWeather = () => (
     <div
+      class="ui two column centered grid"
       style={{
-        backgroundImage: `url('https://images.unsplash.com/photo-1514477917009-389c76a86b68?q=80&w=1967&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D ')`,
-        minHeight: "100vh",
-        fontWeight: "bold",
+        padding: "20px",
+        justifyContent: "center",
       }}
     >
-      <div // current
-        class="ui two column centered grid"
-        style={{
-          padding: "20px",
-          justifyContent: "center",
-        }}
-      >
-        <div>
-          <h2 style={{ margin: "0" }}>{locationDetails.name}</h2>
-          <p style={{ margin: "5px 0" }}>
-            {current.last_updated.split(" ")[1]}
-          </p>
-          <img
-            src={`https:${current.condition.icon}`}
-            alt={current.condition.text}
-            style={{
-              width: "50px",
-              height: "50px",
-              margin: "10px 0",
-            }}
-          />
-          <p style={{ margin: "5px 0" }}>{current.condition.text}</p>
+      <div>
+        <h2>{locationDetails.name}</h2>
+        <p>{current.last_updated.split(" ")[1]}</p>
+        <img
+          src={`https:${current.condition.icon}`}
+          alt={current.condition.text}
+          style={{
+            width: "50px",
+            height: "50px",
+            margin: "10px 0",
+          }}
+        />
+        <p>{current.condition.text}</p>
+        <div class="ui equal width grid">
+          <p class="column">Humidity: {current.humidity}%</p>
+          <p class="column">Pressure: {current.pressure_mb}</p>
+          <p class="column">Sea level: {current.pressure_mb}</p>
+          <p class="column">Feels Like: {current.feelslike_c}°C</p>
         </div>
-        <div>
-          <h1
-            style={{ margin: "0", fontSize: "48px" }}
-          >{`${current.temp_c}°C`}</h1>
+        <div class="ui equal width grid">
+          {hourlyData
+            .filter((_, index) => index % 5 === 0)
+            .map((hour, index) => (
+              <div key={index} class="column">
+                <p>{hour.time.split(" ")[1]}</p>
+                <p>{`${hour.temp_c}°C`}</p>
+              </div>
+            ))}
         </div>
       </div>
-      <div // 5 day
+      <div
+        style={{
+          justifyContent: "center",
+          padding: "50px",
+          margin: "20px",
+        }}
+      >
+        <h1>{`${current.temp_c}°C`}</h1>
+      </div>
+    </div>
+  );
+
+  //Forecast
+  const Forecast = () => (
+    <div>
+      <CurrentWeather />
+      <div
         class="ui grid"
         style={{
-          justifyContent: "space-between",
+          justifyContent: "center",
           padding: "10px",
-          gap: "25px",
+          gap: "20px",
         }}
       >
         {forecast && forecast.length > 0
           ? forecast.slice(0, 5).map((day, index) => (
-              <div key={index} class="three wide column">
+              <div key={index} class="two wide column">
                 <p>{`${day.day.maxtemp_c}°C`}</p>
                 <img
                   src={`https:${day.day.condition.icon}`}
@@ -103,21 +122,19 @@ const App = () => {
             ))
           : null}
       </div>
-      <div // Hourly
-        className="ui grid"
+      <div
+        class="ui grid"
         style={{
           overflowX: "auto",
           padding: "10px",
-          gap: "180px",
           justifyContent: "space-between",
         }}
       >
-        <div className="row">
-          {" "}
+        <div class="row">
           {hourlyData
             .filter((_, index) => index % 3 === 0)
             .map((hour, index) => (
-              <div key={index} className="column">
+              <div key={index} class="column">
                 <p>{hour.time.split(" ")[1]}</p>
                 <p>{`${hour.temp_c}°C`}</p>
               </div>
@@ -125,6 +142,34 @@ const App = () => {
         </div>
       </div>
     </div>
+  );
+
+  return (
+    <Router>
+      <div
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1514477917009-389c76a86b68 ')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          minHeight: "100vh",
+          fontWeight: "bold",
+          padding: "20px",
+        }}
+      >
+        <nav style={{ marginBottom: "20px" }}>
+          <Link to="/" style={{ marginRight: "20px", color: "#fff" }}>
+            Current Forecast
+          </Link>
+          <Link to="/forecast" style={{ color: "#fff" }}>
+            5 Day Forecast
+          </Link>
+        </nav>
+        <Routes>
+          <Route path="/" element={<CurrentWeather />} />
+          <Route path="/forecast" element={<Forecast />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
