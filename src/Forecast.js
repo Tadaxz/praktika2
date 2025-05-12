@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import CurrentWeather from "./CurrentWeather";
+import CurrentWeatherHead from "./CurrentWeatherHead";
 
-const Forecast = ({ forecast, hourlyData, current, locationDetails }) => {
+const Forecast = ({ forecast, current, locationDetails }) => {
   const [DaySelected, setDaySelected] = useState(0);
 
   const selectedDayHours =
@@ -11,11 +11,13 @@ const Forecast = ({ forecast, hourlyData, current, locationDetails }) => {
 
   return (
     <div>
-      <CurrentWeather
-        current={current}
-        locationDetails={locationDetails}
-        hourlyData={hourlyData}
-      />
+      <CurrentWeatherHead current={current} locationDetails={locationDetails} />
+      <div
+        style={{
+          border: "1px solid #dedede",
+          margin: "10px 10rem",
+        }}
+      ></div>
       <div
         class="ui grid"
         style={{
@@ -35,7 +37,7 @@ const Forecast = ({ forecast, hourlyData, current, locationDetails }) => {
                   class="two wide column"
                   style={{
                     textAlign: "center",
-                    border: DaySelected === index ? "2px solid #fff" : "none",
+                    border: DaySelected === index ? "1px solid #ffc" : "none",
                     borderRadius: "5px",
                     cursor: "pointer",
                   }}
@@ -57,6 +59,12 @@ const Forecast = ({ forecast, hourlyData, current, locationDetails }) => {
             })
           : null}
       </div>
+      <div
+        style={{
+          border: "1px solid #dedede",
+          margin: "10px",
+        }}
+      ></div>
       <div
         class="ui grid"
         style={{

@@ -48,13 +48,17 @@ const App = () => {
   return (
     <Router>
       <div
+        class="ui container"
         style={{
           backgroundImage: `url('https://images.unsplash.com/photo-1514477917009-389c76a86b68 ')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           minHeight: "100vh",
           fontWeight: "bold",
-          padding: "20px",
+          padding: "50px",
+          boarder: "10px",
+          borderRadius: "10px",
+          width: "150rem",
         }}
       >
         <nav style={{ marginBottom: "20px" }}>
@@ -81,7 +85,6 @@ const App = () => {
             element={
               <Forecast
                 forecast={forecast}
-                hourlyData={hourlyData}
                 current={current}
                 locationDetails={locationDetails}
               />
